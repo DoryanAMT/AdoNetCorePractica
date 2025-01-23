@@ -10,32 +10,32 @@ using AdoNetCorePractica.Models;
 using System.Diagnostics.Metrics;
 
 #region
-//create procedure SP_GETHOSPITALES
+//create procedure sp_gethospitales
 //as
-//	select NOMBRE from HOSPITAL
+//	select nombre from hospital
 //go
-//create procedure SP_EMPLEADOS_HOSPITAL_OUT
-//(@nombre nvarchar(50), @suma int OUT, @media int OUT, @personas int OUT)
+//create procedure sp_empleados_hospital_out
+//(@nombre nvarchar(50), @suma int out, @media int out, @personas int out)
 //as
-//	select * from V_EMPLEADOS_HOSPITAL
-//	where NOMBRE = @nombre
+//	select * from v_empleados_hospital
+//	where nombre = @nombre
 //	select @suma = sum(salario), @media = avg(salario),
-//    @personas = COUNT(apellido) from V_EMPLEADOS_HOSPITAL
-//	where NOMBRE = @nombre
+//    @personas = count(apellido) from v_empleados_hospital
+//	where nombre = @nombre
 //go
-//create view V_EMPLEADOS_HOSPITAL
+//create view v_empleados_hospital
 //as
-//select DOCTOR.APELLIDO, DOCTOR.ESPECIALIDAD, DOCTOR.SALARIO,
-//DOCTOR.HOSPITAL_COD, HOSPITAL.NOMBRE
-//from DOCTOR
-//inner join HOSPITAL
-//on DOCTOR.HOSPITAL_COD = HOSPITAL.HOSPITAL_COD
+//select doctor.apellido, doctor.especialidad, doctor.salario,
+//doctor.hospital_cod, hospital.nombre
+//from doctor
+//inner join hospital
+//on doctor.hospital_cod = hospital.hospital_cod
 //union
-//select PLANTILLA.APELLIDO, PLANTILLA.FUNCION, PLANTILLA.SALARIO,
-//PLANTILLA.HOSPITAL_COD, HOSPITAL.NOMBRE
-//from PLANTILLA
-//inner join HOSPITAL
-//on PLANTILLA.HOSPITAL_COD = HOSPITAL.HOSPITAL_COD
+//select plantilla.apellido, plantilla.funcion, plantilla.salario,
+//plantilla.hospital_cod, hospital.nombre
+//from plantilla
+//inner join hospital
+//on plantilla.hospital_cod = hospital.hospital_cod
 //go
 #endregion
 
