@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace AdoNetCorePractica
 {
     public partial class PracticaEmpleadosDepartamento : Form
@@ -21,7 +22,7 @@ namespace AdoNetCorePractica
             InitializeComponent();
             this.LoadDepartamentos();
         }
-        public async void LoadDepartamentos()
+        public async Task LoadDepartamentos()
         {
             List<Departamento> departamentos =
                 await this.repo.GetDepartamentoAsync();
@@ -32,17 +33,25 @@ namespace AdoNetCorePractica
             }
 
         }
-        private async void cmbDepartamentos_SelectedIndexChanged(object sender, EventArgs e)
+
+        private async Task LoadEmpleadosDepartamento
+            (string deptnombre)
         {
-            string departamento = this.cmbDepartamentos.SelectedItem.ToString();
             List<Empleado> empleados =
-                await this.repo.GetEmpleadosDepartamentoAsync(departamento);
+                await this.repo.GetEmpleadosDepartamentoAsync(deptnombre);
             this.lstEmpleados.Items.Clear();
             foreach (Empleado emp in empleados)
             {
-                this.lstEmpleados.Items.Add(emp.Apellido);
+                this.lstEmpleados.Items.Add(emp.EmpNo + " - " + emp.Apellido
+                    + " - " + emp.Funcion + " - " + emp.Salario);
             }
-            this.LoadDepartamentos();
+        }
+
+        private async void cmbDepartamentos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string departamento = this.cmbDepartamentos.SelectedItem.ToString();
+            await this.LoadEmpleadosDepartamento(departamento);
+            await this.LoadDepartamentos();
         }
 
         private async void btnInsertDepartamento_Click(object sender, EventArgs e)
@@ -51,9 +60,31 @@ namespace AdoNetCorePractica
             string dnombre = this.txtNombre.Text;
             string loc = this.txtLocalidad.Text;
             await this.repo.InsertDepartamentoAsync(deptno, dnombre, loc);
-            this.LoadDepartamentos();
+            await this.LoadDepartamentos();
         }
 
-        
+        private async void lstEmpleados_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string empleadoSeleccionado = this.lstEmpleados.SelectedItem.ToString();
+            string[] empleadoSeleccionadoWords = empleadoSeleccionado.Split(" - ");
+            string apellido = empleadoSeleccionadoWords[1];
+            string oficio = empleadoSeleccionadoWords[2];
+            int salario = int.Parse(empleadoSeleccionadoWords[3]);
+            this.txtApellido.Text = apellido;
+            this.txtOficio.Text = oficio;
+            this.txtSalario.Text = salario.ToString();
+        }
+
+        private async void btnUpdateEmpleado_Click(object sender, EventArgs e)
+        {
+            
+            string empleadoSeleccionado = this.lstEmpleados.SelectedItem.ToString();
+            string[] empleadoSeleccionadoWords = empleadoSeleccionado.Split(" - ");
+            int empno = int.Parse(empleadoSeleccionadoWords[0]);
+            string apellido = this.txtApellido.Text;
+            string oficio = this.txtOficio.Text;
+            int salario = int.Parse(this.txtSalario.Text);
+            await this.repo.UpdateEmpleadoAsync(empno, apellido, oficio, salario);
+        }
     }
 }

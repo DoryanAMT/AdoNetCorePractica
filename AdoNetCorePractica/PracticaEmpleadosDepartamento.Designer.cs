@@ -146,6 +146,7 @@
             lstEmpleados.Name = "lstEmpleados";
             lstEmpleados.Size = new Size(280, 289);
             lstEmpleados.TabIndex = 10;
+            lstEmpleados.SelectedIndexChanged += lstEmpleados_SelectedIndexChanged;
             // 
             // txtSalario
             // 
@@ -207,6 +208,7 @@
             btnUpdateEmpleado.TabIndex = 17;
             btnUpdateEmpleado.Text = "Update";
             btnUpdateEmpleado.UseVisualStyleBackColor = true;
+            btnUpdateEmpleado.Click += btnUpdateEmpleado_Click;
             // 
             // PracticaEmpleadosDepartamento
             // 

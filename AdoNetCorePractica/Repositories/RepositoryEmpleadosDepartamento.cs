@@ -18,7 +18,7 @@ using System.Data;
 //	declare @deptcod as int
 //	select @deptcod = DEPT_NO from DEPT
 //	where DNOMBRE = @nombre
-//	select EMP.APELLIDO from EMP
+//	select EMP.* from EMP
 //	inner join DEPT
 //	on EMP.DEPT_NO = DEPT.DEPT_NO
 //	where EMP.DEPT_NO = @deptcod
@@ -76,8 +76,14 @@ namespace AdoNetCorePractica.Repositories
             while (await this.reader.ReadAsync())
             {
                 Empleado empleado = new Empleado();
+                int empNo = int.Parse(this.reader["EMP_NO"].ToString());
                 string apellido = this.reader["APELLIDO"].ToString();
+                string funcion = this.reader["OFICIO"].ToString();
+                int salario = int.Parse(this.reader["SALARIO"].ToString());
+                empleado.EmpNo = empNo;
                 empleado.Apellido = apellido;
+                empleado.Funcion = funcion;
+                empleado.Salario = salario;
                 empleados.Add(empleado);
             }
             await this.reader.CloseAsync();
@@ -95,6 +101,23 @@ namespace AdoNetCorePractica.Repositories
             this.com.Parameters.AddWithValue("@deptno", deptno);
             this.com.Parameters.AddWithValue("@dnombre", dnombre);
             this.com.Parameters.AddWithValue("@loc", loc);
+            await this.cn.OpenAsync();
+            await this.com.ExecuteNonQueryAsync();
+            await this.cn.CloseAsync();
+            this.com.Parameters.Clear();
+        }
+        
+        //  ACTUALIZAR A UN EMPLEADO POR EMP_NO
+        public async Task UpdateEmpleadoAsync
+            (int empno, string apellido, string oficio, int salario)
+        {
+            string sql = "SP_UPDATE_EMP";
+            this.com.CommandType = CommandType.StoredProcedure;
+            this.com.CommandText = sql;
+            this.com.Parameters.AddWithValue("@empno", empno);
+            this.com.Parameters.AddWithValue("@apellido", apellido);
+            this.com.Parameters.AddWithValue("@oficio", oficio);
+            this.com.Parameters.AddWithValue("@salario", salario);
             await this.cn.OpenAsync();
             await this.com.ExecuteNonQueryAsync();
             await this.cn.CloseAsync();
