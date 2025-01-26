@@ -23,6 +23,14 @@ using System.Data;
 //	on EMP.DEPT_NO = DEPT.DEPT_NO
 //	where EMP.DEPT_NO = @deptcod
 //go
+//create procedure SP_UPDATE_EMP
+//(@empno as int, @apellido as nvarchar(50), @oficio as nvarchar(50), @salario as int)
+//as
+//	update EMP 
+//	set APELLIDO=@apellido, OFICIO = @oficio, SALARIO = @salario
+//	where EMP_NO=@empno
+//go
+
 #endregion
 
 namespace AdoNetCorePractica.Repositories
